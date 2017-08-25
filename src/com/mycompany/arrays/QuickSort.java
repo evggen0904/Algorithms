@@ -37,8 +37,9 @@ class QuickSort
     public void recQuickSort(int left, int right)
     {
         int size = right-left+1;
-        if(size <= 3)                  // manual sort if small
-            manualSort(left, right);
+        if(size <= 9)                  // manual sort if small
+//            manualSort(left, right);
+            insertionSort(left, right);
         else                           // quicksort if large
         {
             long median = medianOf3(left, right);
@@ -113,6 +114,24 @@ class QuickSort
                 swap(right-1, right);               // center, right
         }
     }  // end manualSort()
+
+    public void insertionSort(int left, int right)
+    {
+        int in, out;
+        //  sorted on left of out
+        for(out=left+1; out<=right; out++)
+        {
+            long temp = theArray[out];    // remove marked item
+            in = out;                     // start shifts at out
+            // until one is smaller,
+            while(in>left && theArray[in-1] >= temp)
+            {
+                theArray[in] = theArray[in-1]; // shift item to right
+                --in;                      // go left one position
+            }
+            theArray[in] = temp;          // insert marked item
+        }  // end for
+    }  // end insertionSort()
 //--------------------------------------------------------------
 }  // end class QuickSort
 ////////////////////////////////////////////////////////////////
