@@ -109,6 +109,8 @@ class DecodingTree implements Comparable<DecodingTree>
 
     private void codeTable(Node node, StringBuilder code, String[] codeTable) {
         if (node.chData != null) {
+        /* добавялем соответствие символа и его байт кода после кодирования в соответствующую ячейку массива
+        * */
             codeTable[node.chData] = code.toString();
             return;
         }
@@ -125,6 +127,12 @@ class DecodingTree implements Comparable<DecodingTree>
 
     private String decode(Node localNode, StringBuilder biteCode, StringBuilder result)
     {
+        /*
+        т.к каждый код символа уникальный и не содержит префиксы другого символа,
+        то декодирование производим простым спуском по дереву от корневого элемента.
+        Когда элемент найден, снова начинаем проход от корневого элемента до тех пор,
+        пока не закончится закодированная строка.
+        * */
         if (localNode.leftChild == null && localNode.rightChild == null) {
             result.append(localNode.chData);
             localNode = root;
