@@ -252,11 +252,11 @@ public class RedBlackTree<K,V> {
     }
 
     private boolean isLeftChild(Node node){
-        return  (node.parent.leftChild == node) ? true : false;
+        return  node.parent.leftChild == node;
     }
 
     private boolean isRightChild(Node node){
-        return  (node.parent.rightChild == node) ? true : false;
+        return  node.parent.rightChild == node;
     }
 
     private void rotateRight(Node rotateNode){
