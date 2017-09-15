@@ -1,6 +1,8 @@
 package com.mycompany.trees;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * Красно-черные правила:
@@ -329,6 +331,20 @@ public class RedBlackTree<K,V> {
             inOrder(localRoot.rightChild);
         }
     }
+
+    public HashMap<K,V> getElements(){
+        HashMap<K,V> map = new HashMap<K, V>();
+        getElemsRec(root,map);
+        return map;
+    }
+
+    private void getElemsRec(Node localRoot, HashMap<K,V> map){
+        if (localRoot != null) {
+            getElemsRec(localRoot.leftChild, map);
+            map.put(localRoot.key, localRoot.value);
+            getElemsRec(localRoot.rightChild, map);
+        }
+    }
 }
 
 class DemoRBTree{
@@ -358,5 +374,8 @@ class DemoRBTree{
         theTree2.printTree();
         theTree2.insert(28,"28");
         theTree2.printTree();
+
+//        HashMap<Integer, String> map = theTree2.getElements();
+//        System.out.println(map.toString());
     }
 }
