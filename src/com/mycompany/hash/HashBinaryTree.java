@@ -43,24 +43,31 @@ class HashBinaryTree<K,V>{
 
     public void insert(K key, V value) // insert a DataItem
     {
-        if (loadFactor > 0.5)
-            rehash();
         int hashVal = hashFunc(key);  // hash the key
+        /*исключаем добавление дубликатов*/
+        if (!find(hashVal, key)) {
+            /*для связанных списков коэфф заполнения должен не превышать единицу*/
+            if (loadFactor > 1)
+                rehash();
 
-        if (hashArray[hashVal] == null)
-            hashArray[hashVal] = new RedBlackTree<K,V>();
-        hashArray[hashVal].insert(key, value);    // insert item
-        numItems++;
-        loadFactor = (float)numItems/arraySize;
+            if (hashArray[hashVal] == null)
+                hashArray[hashVal] = new RedBlackTree<K, V>();
+            hashArray[hashVal].insert(key, value);    // insert item
+            numItems++;
+            loadFactor = (float) numItems / arraySize;
+        }
     }
-//   TODO: доделать поиск значения в красно-черном дереве и соотвественно добавить поиск
-//   в хэш таблице. Необходимо исключить дубликаты.
-    private boolean find(int hashVal, K key, V value){
+
+    public boolean find(K key){
+        int hashVal = hashFunc(key);
+        return find(hashVal, key);
+    }
+
+    private boolean find(int hashVal, K key){
         RedBlackTree<K, V> tree = hashArray[hashVal];
         if (tree != null){
-//            tree.find(key, value);
+            return tree.find(key);
         }
-
         return false;
     }
 
@@ -108,8 +115,8 @@ class HashBinaryTree<K,V>{
         {
             if(hashArray[j] != null)
                 hashArray[j].printTree();
-            else
-                System.out.println("** ");
+      /*      else
+                System.out.println("** ");*/
         }
         System.out.println("");
     }
@@ -117,13 +124,18 @@ class HashBinaryTree<K,V>{
 
 class DemoHashBinaryTree{
     public static void main(String[] args) {
-        HashBinaryTree<Integer, String> theTree = new HashBinaryTree<>(13);
+        int initialSize = 29;
+        HashBinaryTree<Integer, String> theTree = new HashBinaryTree<>(initialSize);
         Random random = new Random();
-        for (int i = 0; i < 20; i++) {
-            int value = 10000 + random.nextInt(10000);
-            theTree.insert(value, ""+value);
+        for (int i = 1; i <= 5; i++) {
+            theTree.insert(i, ""+i);
+            theTree.insert(i+initialSize, ""+(i+initialSize));
+            theTree.insert(i+initialSize*2, ""+(i+initialSize*2));
         }
 
         theTree.displayTable();
+
+        System.out.println("Search for element '63': " + theTree.find(63));
+        System.out.println("Search for element '50': " + theTree.find(50));
     }
 }

@@ -114,7 +114,7 @@ public class RedBlackTree<K,V> {
         fixTree(newNode);
     }
 
-/* доделать удаление*/
+/* TODO: доделать удаление*/
     public boolean delete(K key)
     {
         Node current = root;
@@ -240,6 +240,21 @@ public class RedBlackTree<K,V> {
         root.setColor(BLACK);
     }
 
+    public boolean find(K key){
+        Node current = root;
+        Comparable<K> k = (Comparable<K>) key;
+
+        while(k.compareTo(current.key) != 0)        // search for node
+        {
+            if(k.compareTo(current.key) < 0)
+                current = current.leftChild;
+            else
+                current = current.rightChild;
+            if(current == null)
+                return false;
+        }
+        return true;
+    }
 
     private void flipColors(Node node){
         /*если узел черный и имеет красных потомков нужно поменять цвета всех узлов
@@ -375,6 +390,8 @@ class DemoRBTree{
         theTree2.insert(28,"28");
         theTree2.printTree();
 
+        System.out.println("Find '43' in tree2: " + theTree2.find(43));
+        System.out.println("Find '90' in tree2: " + theTree2.find(90));
 //        HashMap<Integer, String> map = theTree2.getElements();
 //        System.out.println(map.toString());
     }
